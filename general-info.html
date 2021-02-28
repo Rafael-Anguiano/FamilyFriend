@@ -1,0 +1,1690 @@
+{% extends "baseS.html" %}
+{% load static %}
+{% block title %} Información general del interesado {% endblock %}
+{% block extrahead %}
+<style type="text/css">
+.nav2{
+    max-height: 300px;
+    overflow-y:scroll; 
+}
+.nav1{
+    max-height: 500px;
+    overflow-y:scroll; 
+}
+.activeTab{
+    background: #E1E1E1;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+
+    <script type="text/javascript">
+
+    $(document).ready( function() {
+        $("#botonusuario").click(function() {
+            //Paciente
+            console.log("HolaBotonPaciente")
+            var patient_name = $("#patient_name").val();
+            var patient_last_name = $("#patient_last_name").val();
+            var patient_email = $("#patient_email").val();
+            var patient_address = $("#patient_address").val();
+            var patient_instagram = $("#patient_instagram").val();
+            var patient_telegram = $("#patient_telegram").val();
+            var patient_sex  = $("#patient_sex").val();
+            var patient_whatsapp = $("#patient_whatsapp").val();
+            var patient_phone = $("#patient_phone").val();
+            var patient_verification_period = $("#patient_verification_period").val();
+
+            var info = {};
+            info.patient_name = patient_name;
+            info.patient_last_name = patient_last_name;
+            info.patient_email = patient_email;
+            info.patient_address = patient_address;
+            info.patient_instagram = patient_instagram;
+            info.patient_telegram = patient_telegram;
+            info.patient_sex = patient_sex;
+            info.patient_whatsapp = patient_whatsapp;
+            info.patient_phone = patient_phone;
+            info.patient_verification_period = patient_verification_period;
+            console.log("HolaBotonPaciente 3")
+
+            if(patient_name == "" || patient_last_name== "" || patient_email == "" || patient_whatsapp=="" ||patient_phone==""){
+                  alert("Hay campos obligatorios sin llenar")
+            }else{
+                  $.post("/alta/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonusuario").disabled = true;
+                      }
+                  );
+            }
+        }); 
+
+        $("#botonfamiliar").click(function() {
+            //Responsable
+            console.log("HolaBotonFamiliar");
+            var family_name = $("#family_name").val();
+            var family_last_name = $("#family_last_name").val();
+            var family_email = $("#family_email").val();
+            var family_instagram= $("#family_instagram").val();
+            var family_telegram = $("#family_telegram").val();
+            var family_address = $("#family_address").val();
+            var family_whatsapp = $("#family_whatsapp").val();
+            var family_phone = $("#family_phone").val();
+
+            var info = {};
+            info.family_name = family_name;
+            info.family_last_name = family_last_name;
+            info.family_email = family_email;
+            info.family_instagram = family_instagram;
+            info.family_telegram = family_telegram;
+            info.family_address = family_address;
+            info.family_whatsapp = family_whatsapp;
+            info.family_phone = family_phone;
+
+            if(family_name == "" || family_last_name== "" || family_email == "" || family_whatsapp==""||family_phone==""){
+                  alert("Hay campos obligatorios sin llenar")
+            }else{
+                  if(document.getElementById("botonusuario").disabled == true){
+                        $.post("/altaResponsable/",info,
+                              function(data){
+                                    alert("Los datos fueron registrados correctamente")
+                                    document.getElementById("botonfamiliar").disabled = true;
+                              }
+                        );
+                  }else{
+                        alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+                  }
+                  
+            }
+
+        });
+
+        $("#botonhistorico").click(function() {
+
+            var patient_email = $("#patient_email").val();
+            var current_disease = $("#current_disease").val();
+            var medicine_name = $("#medicine_name").val();
+            var medicine_quantity = $("#medicine_quantity").val();
+            //Historico
+            console.log("HolaBotonHistórico");
+            var evaluation_cva = $("input[type=checkbox][id=evaluation_cva]:checked").val();
+            var evaluation_cardiac = $("input[type=checkbox][id=evaluation_cardiac]:checked").val();
+            var evaluation_asthma = $("input[type=checkbox][id=evaluation_asthma]:checked").val();
+            var evaluation_smoker = $("input[type=checkbox][id=evaluation_smoker]:checked").val();
+            var evaluation_elevated_cholesterol = $("input[type=checkbox][id=evaluation_elevated_cholesterol]:checked").val();
+            var evaluation_breast_feeding = $("input[type=checkbox][id=evaluation_breast_feeding]:checked").val();
+            var evaluation_substance_abuse = $("input[type=checkbox][id=evaluation_substance_abuse]:checked").val();
+            var evaluation_hypertension = $("input[type=checkbox][id=evaluation_hypertension]:checked").val();
+            var evaluation_dialysis = $("input[type=checkbox][id=evaluation_dialysis]:checked").val();
+            var evaluation_migraine = $("input[type=checkbox][id=evaluation_migraine]:checked").val();
+            var evaluation_thyroid = $("input[type=checkbox][id=evaluation_thyroid]:checked").val();
+            var evaluation_alcoholism = $("input[type=checkbox][id=evaluation_alcoholism]:checked").val();
+            var evaluation_cancer = $("input[type=checkbox][id=evaluation_cancer]:checked").val();
+            var evaluation_seizures = $("input[type=checkbox][id=evaluation_seizures]:checked").val();
+            var evaluation_copd = $("input[type=checkbox][id=evaluation_copd]:checked").val();
+            var evaluation_psych = $("#evaluation_psych").val();
+            var evaluation_genitourinary = $("#evaluation_genitourinary").val();
+            var evaluation_geriatric = $("#evaluation_geriatric").val();
+            var evaluation_gestational_age = $("#evaluation_gestational_age").val();
+            if(evaluation_cva!= 1){
+                  evaluation_cva = 0;
+            }
+            if(evaluation_cardiac!= 1){
+                  evaluation_cardiac = 0;
+            }
+            if(evaluation_asthma!= 1){
+                  evaluation_asthma = 0;
+            }
+            if(evaluation_smoker!= 1){
+                  evaluation_smoker = 0;
+            }
+            if(evaluation_elevated_cholesterol!= 1){
+                  evaluation_elevated_cholesterol = 0;
+            }
+            if(evaluation_breast_feeding!= 1){
+                  evaluation_breast_feeding = 0;
+            }
+            if(evaluation_substance_abuse!= 1){
+                  evaluation_substance_abuse = 0;
+            }
+            if(evaluation_hypertension!= 1){
+                  evaluation_hypertension = 0;
+            }
+            if(evaluation_dialysis!= 1){
+                  evaluation_dialysis = 0;
+            }
+            if(evaluation_migraine!= 1){
+                  evaluation_migraine= 0;
+            }
+            if(evaluation_thyroid!= 1){
+                  evaluation_thyroid = 0;
+            }
+            if(evaluation_alcoholism!= 1){
+                  evaluation_alcoholism = 0;
+            }
+            if(evaluation_cancer!= 1){
+                  evaluation_cancer = 0;
+            }
+            if(evaluation_seizures!= 1){
+                  evaluation_seizures = 0;
+            }
+            if(evaluation_copd!= 1){
+                  evaluation_copd = 0;
+            }
+
+            var info = {};
+            info.patient_email = patient_email;
+            info.current_disease = current_disease;
+            info.medicine_name = medicine_name;
+            info.medicine_quantity = medicine_quantity;
+
+            info.evaluation_cva = evaluation_cva;
+            info.evaluation_cardiac = evaluation_cardiac;
+            info.evaluation_asthma = evaluation_asthma;
+            info.evaluation_smoker = evaluation_smoker;
+            info.evaluation_elevated_cholesterol = evaluation_elevated_cholesterol;
+            info.evaluation_breast_feeding = evaluation_breast_feeding;
+            info.evaluation_substance_abuse = evaluation_substance_abuse;
+            info.evaluation_hypertension = evaluation_hypertension;
+            info.evaluation_dialysis = evaluation_dialysis;
+            info.evaluation_migraine = evaluation_migraine;
+            info.evaluation_thyroid = evaluation_thyroid;
+            info.evaluation_alcoholism = evaluation_alcoholism;
+            info.evaluation_cancer = evaluation_cancer;
+            info.evaluation_seizures = evaluation_seizures;
+            info.evaluation_copd = evaluation_copd;
+            info.evaluation_psych = evaluation_psych;
+            info.evaluation_genitourinary = evaluation_genitourinary;
+            info.evaluation_geriatric = evaluation_geriatric;
+            info.evaluation_gestational_age = evaluation_gestational_age;
+
+            if(evaluation_psych==""||evaluation_genitourinary==""||evaluation_geriatric==""||evaluation_gestational_age==""){
+                  alert("Hay campos obligatorios sin llenar")
+            }else{
+                  if(document.getElementById("botonenfermedades").disabled == true){
+                       $.post("/altaEvaluacion/",info,
+                            function(data){
+                              alert("Los datos fueron registrados correctamente")
+                              document.getElementById("botonhistorico").disabled = true;
+                            }
+                        );
+                        $.post("/altaEnfermedica/",info,
+                            function(data){
+
+                            }
+                        );   
+                  }else{
+                        alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+                  }
+            }
+
+        });
+
+        $("#botonOrientacion").click(function() {
+            console.log("HolaBotonOrientacion");
+            var evaluation_psych = $("#evaluation_psych").val();
+            //Orientacion
+            var evaluation_loc = $("#evaluation_loc").val();
+            var evaluation_person = $("#evaluation_person").val();
+            var evaluation_place = $("#evaluation_place").val();
+            var evaluation_time = $("#evaluation_time").val();
+            var evaluation_situation = $("#evaluation_situation").val();
+
+            var info = {};
+            info.evaluation_psych = evaluation_psych;
+
+            info.evaluation_loc = evaluation_loc;
+            info.evaluation_person = evaluation_person;
+            info.evaluation_place = evaluation_place;
+            info.evaluation_time = evaluation_time;
+            info.evaluation_situation = evaluation_situation;
+
+            if(document.getElementById("botonhistorico").disabled == true){
+                  $.post("/altaOrientacion/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonOrientacion").disabled = true;
+                      }
+                  );
+            }else{
+                  alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+            }
+            
+
+        });
+
+        $("#botonCuerpo").click(function() {
+            //Vitales
+            console.log("HolaBotonCuerpo");
+            var evaluation_psych = $("#evaluation_psych").val();
+
+            var evaluation_hair = $("#evaluation_hair").val();
+            var evaluation_perla = $("#evaluation_perla").val();
+            var evaluation_nose = $("#evaluation_nose").val();
+            var evaluation_ears = $("#evaluation_ears").val();
+            var evaluation_mouth = $("#evaluation_mouth").val();
+            var evaluation_midline_tongue = $("#evaluation_midline_tongue").val();
+            var evaluation_moist = $("#evaluation_moist").val();
+            var evaluation_lesions = $("#evaluation_lesions").val();
+            var evaluation_dentitions = $("#evaluation_dentitions").val();
+            var evaluation_chest_symmetry = $("#evaluation_chest_symmetry").val();
+            var evaluation_skin_turgor = $("#evaluation_skin_turgor").val();
+            var evaluation_ranterior = $("#evaluation_anterior").val();
+            var evaluation_rposterior = $("#evaluation_posterior").val();
+            var evaluation_rlateral = $("#evaluation_lateral").val();
+            var evaluation_abinspection = $("#evaluation_inspection").val();
+            var evaluation_abpalpation = $("#evaluation_palpation").val();
+            var evaluation_ruq = $("#evaluation_ruq").val();
+            var evaluation_rlq = $("#evaluation_rlq").val();
+            var evaluation_luq = $("#evaluation_luq").val();
+            var evaluation_llq = $("#evaluation_llq").val();
+            var evaluation_skin = $("#evaluation_skin").val();
+            var evaluation_skin_description = $("#evaluation_skin_description").val();
+
+            var info = {};
+            info.evaluation_psych = evaluation_psych;
+
+            info.evaluation_hair = evaluation_hair;
+            info.evaluation_perla = evaluation_perla;
+            info.evaluation_nose = evaluation_nose;
+            info.evaluation_ears = evaluation_ears;
+            info.evaluation_mouth = evaluation_mouth;
+            info.evaluation_midline_tongue = evaluation_midline_tongue;
+            info.evaluation_moist = evaluation_moist;
+            info.evaluation_lesions = evaluation_lesions;
+            info.evaluation_dentitions = evaluation_dentitions;
+            info.evaluation_chest_symmetry = evaluation_chest_symmetry;
+            info.evaluation_skin_turgor = evaluation_skin_turgor;
+            info.evaluation_ranterior = evaluation_ranterior;
+            info.evaluation_rposterior = evaluation_rposterior;
+            info.evaluation_rlateral = evaluation_rlateral;
+            info.evaluation_abinspection = evaluation_abinspection;
+            info.evaluation_abpalpation = evaluation_abpalpation;
+            info.evaluation_ruq = evaluation_ruq;
+            info.evaluation_rlq = evaluation_rlq;
+            info.evaluation_luq = evaluation_luq;
+            info.evaluation_llq = evaluation_llq;
+            info.evaluation_skin = evaluation_skin;
+            info.evaluation_skin_description = evaluation_skin_description;
+
+            if(document.getElementById("botonOrientacion").disabled == true){
+                  $.post("/altaCuerpo/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonCuerpo").disabled = true;
+                      }
+                  );
+            }else{
+                  alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+            }
+
+        });
+
+        $("#botonGeneral").click(function() {
+            console.log("HolaBotonGeneral");
+            var evaluation_psych = $("#evaluation_psych").val();
+
+            var evaluation_temp = $("#evaluation_temp").val();
+            var evaluation_bp = $("#evaluation_bp").val();
+            var evaluation_pulseOx = $("#evaluation_pulseOx").val();
+            var evaluation_pulseR = $("#evaluation_r").val();
+            var evaluation_carotid_pulse = $("#evaluation_carotid_pulse").val();
+            var evaluation_carotid_pulse_type = $("#evaluation_carotid_pulse_type").val();
+            var evaluation_apical_pulse = $("#evaluation_apical_pulse").val();
+            var evaluation_apical_pulse_type = $("#evaluation_apical_pulse_type").val();
+            var evaluation_weight = $("#evaluation_weight").val();
+            var evaluation_height = $("#evaluation_height").val();
+            var evaluation_bm = $("#evaluation_bm").val();
+            var evaluation_radial_pulseS = $("#evaluation_radial_pulseS").val();
+            var evaluation_radial_pulseI = $("#evaluation_radial_pulseI").val();
+            var evaluation_fr_pulse = $("#evaluation_fr_pulse").val();
+            var evaluation_fl_pulse = $("#evaluation_fl_pulse").val();
+
+            var info = {};
+            info.evaluation_psych = evaluation_psych;
+            info.evaluation_temp = evaluation_temp;
+            info.evaluation_bp = evaluation_bp;
+            info.evaluation_pulseOx = evaluation_pulseOx;
+            info.evaluation_pulseR = evaluation_pulseR;
+            info.evaluation_carotid_pulse = evaluation_carotid_pulse;
+            info.evaluation_carotid_pulse_type = evaluation_carotid_pulse_type;
+            info.evaluation_apical_pulse = evaluation_apical_pulse;
+            info.evaluation_apical_pulse_type = evaluation_apical_pulse_type;
+            info.evaluation_weight = evaluation_weight;
+            info.evaluation_height = evaluation_height;
+            info.evaluation_bm = evaluation_bm;
+            info.evaluation_radial_pulseS = evaluation_radial_pulseS;
+            info.evaluation_radial_pulseI = evaluation_radial_pulseI;
+            info.evaluation_fr_pulse = evaluation_fr_pulse;
+            info.evaluation_fl_pulse = evaluation_fl_pulse;
+            
+            if(document.getElementById("botonCuerpo").disabled == true){
+                  $.post("/altaGeneral/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonGeneral").disabled = true;
+                      }
+                  );
+            }else{
+                  alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+            }
+
+        });
+
+        $("#botonDolor").click(function() {
+            console.log("HolaBotonDolor");
+            var evaluation_psych = $("#evaluation_psych").val();
+
+            var evaluation_pain = $("#evaluation_pain").val();
+            var evaluation_pain_escale = $("#evaluation_pain_escale").val();
+            var evaluation_pain_location = $("#evaluation_pain_location").val();
+            var evaluation_pain_duration = $("#evaluation_pain_duration").val();
+            var evaluation_pain_characteristics = $("#evaluation_pain_characteristics").val();
+            var evaluation_pain_precipitation = $("#evaluation_pain_precipitation").val();
+            var evaluation_pain_frecuency = $("#evaluation_pain_frecuency").val();
+            var evaluation_pain_non_verbals = $("#evaluation_pain_non_verbals").val();
+            var evaluation_pain_relief_factors = $("#evaluation_pain_relief_factors").val();
+            var evaluation_pain_sleep = $("#evaluation_pain_sleep").val();
+
+            var info = {};
+            info.evaluation_psych = evaluation_psych;
+            info.evaluation_pain = evaluation_pain;
+            info.evaluation_pain_escale = evaluation_pain_escale;
+            info.evaluation_pain_location = evaluation_pain_location;
+            info.evaluation_pain_duration = evaluation_pain_duration;
+            info.evaluation_pain_characteristics = evaluation_pain_characteristics;
+            info.evaluation_pain_precipitation = evaluation_pain_precipitation;
+            info.evaluation_pain_frecuency = evaluation_pain_frecuency;
+            info.evaluation_pain_non_verbals = evaluation_pain_non_verbals;
+            info.evaluation_pain_relief_factors = evaluation_pain_relief_factors;
+            info.evaluation_pain_sleep = evaluation_pain_sleep;
+            
+            if(document.getElementById("botonGeneral").disabled == true){
+                  $.post("/altaDolor/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonDolor").disabled = true;
+                      }
+                  );
+            }else{
+                  alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+            }
+
+        });
+
+        $("#botonFuerza").click(function() {
+            console.log("HolaBotonFuerza");
+            var evaluation_psych = $("#evaluation_psych").val();
+            //Fuerza
+            var evaluation_sur = $("#evaluation_sur").val();
+            var evaluation_sul = $("#evaluation_sul").val();
+            var evaluation_slr = $("#evaluation_slr").val();
+            var evaluation_sll = $("#evaluation_sll").val();
+            var evaluation_sensations = $("#evaluation_sensations").val();
+
+            var info = {};
+            info.evaluation_psych = evaluation_psych;
+            info.evaluation_sur = evaluation_sur;
+            info.evaluation_sul = evaluation_sul;
+            info.evaluation_slr = evaluation_slr;
+            info.evaluation_sll = evaluation_sll;
+            info.evaluation_sensations = evaluation_sensations;
+            
+            if(document.getElementById("botonDolor").disabled == true){
+                  $.post("/altaFuerza/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonFuerza").disabled = true;
+                      }
+                  );
+            }else{
+                  alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+            }
+
+        });
+
+        $("#botonROM").click(function() {
+            console.log("HolaBotonROM");
+            var evaluation_psych = $("#evaluation_psych").val();
+            //ROM
+            var evaluation_rom_ur = $("#evaluation_rom_ur").val();
+            var evaluation_rom_ul = $("#evaluation_rom_ul").val();
+            var evaluation_rom_lr = $("#evaluation_rom_lr").val();
+            var evaluation_rom_ll = $("#evaluation_rom_ll").val();
+
+            var info = {};
+            info.evaluation_psych = evaluation_psych;
+            info.evaluation_rom_ur = evaluation_rom_ur;
+            info.evaluation_rom_ul = evaluation_rom_ul;
+            info.evaluation_rom_lr = evaluation_rom_lr;
+            info.evaluation_rom_ll = evaluation_rom_ll;
+            
+            if(document.getElementById("botonFuerza").disabled == true){
+                  $.post("/altaROM/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonROM").disabled = true;
+                      }
+                  );
+            }else{
+                  alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+            }
+
+        });
+
+        $("#botonExtremidad").click(function() {
+            console.log("HolaBotonExtremidad");
+            var evaluation_psych = $("#evaluation_psych").val();
+            //var evaluation_cva = $("input[type=checkbox][id=evaluation_cva]:checked").val();
+            //Extremidad
+            var evaluation_grip_sup = $("#evaluation_grip_sup").val();
+            var evaluation_veins_sup = $("#evaluation_veins_sup").val();
+            var evaluation_temp_vs_trunk_sup = $("#evaluation_temp_vs_trunk_sup").val();
+            var evaluation_capillary_refill = $("input[type=checkbox][id=evaluation_capillary_refill]:checked").val();
+            var evaluation_hair_present = $("input[type=checkbox][id=evaluation_hair_present]:checked").val();
+            var evaluation_foot_strength = $("input[type=checkbox][id=evaluation_foot_strength]:checked").val();
+            var evaluation_nails = $("input[type=checkbox][id=evaluation_nails]:checked").val();
+            var evaluation_nails_yellowed = $("input[type=checkbox][id=evaluation_nails_yellowed]:checked").val();
+            var evaluation_nails_thickened = $("input[type=checkbox][id=evaluation_nails_thickened]:checked").val();
+            var evaluation_nails_ingrown = $("input[type=checkbox][id=evaluation_nails_ingrown]:checked").val();
+            var evaluation_grip_low = $("#evaluation_grip_low").val();
+            var evaluation_veins_low = $("#evaluation_veins_low").val();
+            var evaluation_edema = $("#evaluation_edema").val();
+            var evaluation_homains = $("#evaluation_homains").val();
+            var evaluation_claudations = $("#evaluation_claudations").val();
+            var evaluation_temp_vs_trunk_low = $("#evaluation_temp_vs_trunk_low").val();
+
+            if(evaluation_capillary_refill!= 1){
+                  evaluation_capillary_refill = 0;
+            }
+            if(evaluation_hair_present!= 1){
+                  evaluation_hair_present = 0;
+            }
+            if(evaluation_foot_strength!= 1){
+                  evaluation_foot_strength = 0;
+            }
+            if(evaluation_nails!= 1){
+                  evaluation_nails = 0;
+            }
+            if(evaluation_nails_yellowed!= 1){
+                  evaluation_nails_yellowed = 0;
+            }
+            if(evaluation_nails_thickened!= 1){
+                  evaluation_nails_thickened = 0;
+            }
+            if(evaluation_nails_ingrown!= 1){
+                  evaluation_nails_ingrown = 0;
+            }
+
+
+            var info = {};
+            info.evaluation_psych = evaluation_psych;
+            info.evaluation_grip_sup = evaluation_grip_sup;
+            info.evaluation_veins_sup = evaluation_veins_sup;
+            info.evaluation_temp_vs_trunk_sup = evaluation_temp_vs_trunk_sup;
+            info.evaluation_capillary_refill = evaluation_capillary_refill;
+            info.evaluation_hair_present = evaluation_hair_present;
+            info.evaluation_foot_strength = evaluation_foot_strength;
+            info.evaluation_nails = evaluation_nails;
+            info.evaluation_nails_yellowed = evaluation_nails_yellowed;
+            info.evaluation_nails_thickened = evaluation_nails_thickened;
+            info.evaluation_nails_ingrown = evaluation_nails_ingrown;
+            info.evaluation_grip_low = evaluation_grip_low;
+            info.evaluation_veins_low = evaluation_veins_low;
+            info.evaluation_edema = evaluation_edema;
+            info.evaluation_homains = evaluation_homains;
+            info.evaluation_claudations = evaluation_claudations;
+            info.evaluation_temp_vs_trunk_low = evaluation_temp_vs_trunk_low;
+
+            if(document.getElementById("botonROM").disabled == true){
+                  $.post("/altaExtremidad/",info,
+                      function(data){
+                        alert("Los datos fueron registrados correctamente")
+                        document.getElementById("botonExtremidad").disabled = true;
+                        document.getElementById("botonfinal").disabled = false;
+                      }
+                  );
+            }else{
+                  alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+            }
+        });
+        
+        $("#botonenfermedades").click( function() { 
+            console.log("Hola mundo");
+            var patient_email = $("#patient_email").val();
+            //Enfermedad
+            var current_disease = $("#current_disease").val();
+            //Sintoma
+            var current_symptoms = $("#current_symptoms").val();
+
+            var info = {};
+            info.patient_email = patient_email;
+            info.current_disease = current_disease;
+            info.current_symptoms = current_symptoms;
+
+            if(current_symptoms=="" || current_disease==""){
+                  alert("Hay campos obligatorios sin llenar")
+            }else{
+                  if(document.getElementById("botoncontacto").disabled == true){
+                        $.post("/altaSintoma/",info,
+                            function(data){
+
+                            }
+                        );
+
+                        $.post("/altaEnfermedad/",info,
+                            function(data){
+                              alert("Los datos fueron registrados correctamente")
+                              document.getElementById("botonenfermedades").disabled = true;
+                            }
+                        );
+                  }else{
+                        alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente") 
+                  }
+                  
+            }
+        });
+
+        $("#botonmedicina").click( function() { 
+            console.log("Hola mundo")
+            //
+            var patient_email = $("#patient_email").val();
+            var family_email = $("#family_email").val();
+            //Medicamento
+            var medicine_name = $("#medicine_name").val();
+            var medicine_quantity = $("#medicine_quantity").val();
+            var medicine_regularity = $("#medicine_regularity").val();
+            
+            var info = {};
+
+            info.medicine_name = medicine_name;
+            info.medicine_quantity = medicine_quantity;
+            info.medicine_regularity = medicine_regularity;
+
+            info.patient_email = patient_email;
+            info.family_email = family_email;
+
+            if(medicine_name == "" || medicine_quantity == "" || medicine_regularity==""){
+                  alert("Hay campos obligatorios sin llenar")
+            }else{
+                  if(document.getElementById("botonfamiliar").disabled == true){
+                        $.post("/altaMedicamento/",info,
+                            function(data){
+
+                            }
+                        );
+
+                        $.post("/altaRespac/",info,
+                            function(data){
+                              alert("Los datos fueron registrados correctamente")
+                              document.getElementById("botonmedicina").disabled = true;
+                            }
+                        );
+                  }else{
+                        alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")  
+                  }
+                  
+            }
+            
+        });
+        
+        $("#botoncontacto").click( function() { 
+            console.log("Hola mundo")
+            var patient_email = $("#patient_email").val();
+            //Tipo de Contacto
+            var contact_type = $("#contact_type").val();
+            //Contacto
+            var contact_name = $("#contact_name").val();
+            var contact_last_name = $("#contact_last_name").val();
+            var contact_email = $("#contact_email").val();
+            var contact_instagram = $("#contact_instagram").val();
+            var contact_telegram = $("#contact_telegram").val();
+            var contact_address = $("#contact_address").val();
+            var contact_whatsapp = $("#contact_whatsapp").val();
+            var contact_phone = $("#contact_phone").val();
+
+
+            var info = {};
+
+            info.contact_type = contact_type;
+            
+            info.patient_email = patient_email;
+            info.contact_name = contact_name;
+            info.contact_last_name = contact_last_name;
+            info.contact_email = contact_email;
+            info.contact_instagram = contact_instagram;
+            info.contact_telegram = contact_telegram;
+            info.contact_address = contact_address;
+            info.contact_whatsapp = contact_whatsapp;
+            info.contact_phone = contact_phone;
+
+            if(contact_name==""|| contact_last_name=="" ||contact_email==""||contact_phone==""||contact_whatsapp==""||contact_type==""){
+                  alert("Hay campos obligatorios sin llenar")
+            }else{
+                  if(document.getElementById("botonmedicina").disabled == true){
+                        $.post("/altaTipocontacto/",info,
+                            function(data){
+
+                            }
+                        );
+
+
+                        $.post("/altaContacto/",info,
+                            function(data){
+                              alert("Los datos fueron registrados correctamente")
+                              document.getElementById("botoncontacto").disabled = true;
+                            }
+                        );
+                  }else{
+                        alert("Hay pestañas anteriores sin llenar \nTip: Asegurese de que el botón de 'Registrar' se deshabilite antes de pasar a una sección siguiente")
+                  }
+                  
+            }
+            
+
+                /*if(validaForm()){                               
+                    $.post("enviar.php",$("#formdata").serialize(),function(res){
+                        $("#formulario").fadeOut("slow");  
+                        if(res == 1){
+                            $("#exito").delay(500).fadeIn("slow");      
+                        } else {
+                            $("#fracaso").delay(500).fadeIn("slow");    
+                        }
+                    });
+                }*/
+        }); 
+
+        $("#botonfinal").click( function() { 
+            if(document.getElementById("botonusuario").disabled == true&&
+                  document.getElementById("botonfamiliar").disabled == true&&
+                  document.getElementById("botonmedicina").disabled == true&&
+                  document.getElementById("botoncontacto").disabled == true&&
+                  document.getElementById("botonenfermedades").disabled == true&&
+                  document.getElementById("botonhistorico").disabled == true&&
+                  document.getElementById("botonOrientacion").disabled == true&&
+                  document.getElementById("botonCuerpo").disabled == true&&
+                  document.getElementById("botonGeneral").disabled == true&&
+                  document.getElementById("botonDolor").disabled == true&&
+                  document.getElementById("botonFuerza").disabled == true&&
+                  document.getElementById("botonROM").disabled == true&&
+                  document.getElementById("botonExtremidad").disabled == true)
+            {
+
+                  alert("Muchas gracias y Bienvenido")
+                  document.getElementById("formdata").reset();
+                  document.getElementById("formfamiliar").reset();
+                  document.getElementById("formmed").reset();
+                  document.getElementById("formcontacts").reset();
+                  document.getElementById("formdiseases").reset();
+                  document.getElementById("formhistoric").reset();
+                  document.getElementById("formOrientation").reset();
+                  document.getElementById("formCuerpo").reset();
+                  document.getElementById("formGeneral").reset();
+                  document.getElementById("formDolor").reset();
+                  document.getElementById("formFuerza").reset();
+                  document.getElementById("formROM").reset();
+                  document.getElementById("formExtremidad").reset();
+                  document.getElementById("botonusuario").disabled = false;
+                  document.getElementById("botonfamiliar").disabled = false;
+                  document.getElementById("botonmedicina").disabled = false;
+                  document.getElementById("botoncontacto").disabled = false;
+                  document.getElementById("botonenfermedades").disabled = false;
+                  document.getElementById("botonhistorico").disabled = false;
+                  document.getElementById("botonOrientacion").disabled = false;
+                  document.getElementById("botonCuerpo").disabled = false;
+                  document.getElementById("botonGeneral").disabled = false;
+                  document.getElementById("botonDolor").disabled = false;
+                  document.getElementById("botonFuerza").disabled = false;
+                  document.getElementById("botonROM").disabled = false;
+                  document.getElementById("botonExtremidad").disabled = false;
+            }else{
+                  alert("Usted no ha terminado el registro")
+            }
+        });   
+    });
+     
+    </script>
+      <div class="section-colored">
+         <div class="container">
+      <div id="formulario" class="container-fluid">
+            <div class="column">
+                  <div class="form-group mx-sm-3" >
+                        <div align="right">
+                              <input type="button" class="btn btn-danger" id="botonfinal" value="Finalizar Registro" disabled>
+                        </div>
+                  </div>
+                  <nav>
+                        <ul class="nav nav-tabs" id="nav-tab" role="tablist" style="background-color: #B9E9F9">
+                            <li class="nav-item">
+                            	<a aria-selected="true" class="nav-item nav-link active" id="nav-paciente-tab" data-toggle="tab" href="#nav-paciente" role="tab" aria-controls="nav-paciente" >Paciente</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-familiar-tab" data-toggle="tab" href="#nav-familiar" role="tab" aria-controls="nav-familiar" aria-selected="false">Familiar</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-medicamento-tab" data-toggle="tab" href="#nav-medicamento" role="tab" aria-controls="nav-medicamento" aria-selected="false">Medicamento</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-contacto-tab" data-toggle="tab" href="#nav-contacto" role="tab" aria-controls="nav-contacto" aria-selected="false">Contacto</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-enfermedades-tab" data-toggle="tab" href="#nav-enfermedades" role="tab" aria-controls="nav-enfermedades" aria-selected="false">Enfermedades</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-evaluacion-tab" data-toggle="tab" href="#nav-evaluacion" role="tab" aria-controls="nav-evaluacion" aria-selected="false">Evaluación</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-orientacion-tab" data-toggle="tab" href="#nav-orientacion" role="tab" aria-controls="nav-orientacion" aria-selected="false">Orientación</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-cuerpo-tab" data-toggle="tab" href="#nav-cuerpo" role="tab" aria-controls="nav-cuerpo" aria-selected="false">Cuerpo</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-general-tab" data-toggle="tab" href="#nav-general" role="tab" aria-controls="nav-general" aria-selected="false">General</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-dolor-tab" data-toggle="tab" href="#nav-dolor" role="tab" aria-controls="nav-dolor" aria-selected="false">Dolor</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-fuerza-tab" data-toggle="tab" href="#nav-fuerza" role="tab" aria-controls="nav-fuerza" aria-selected="false">Fuerza</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-rom-tab" data-toggle="tab" href="#nav-rom" role="tab" aria-controls="nav-rom" aria-selected="false">ROM</a>
+                            </li>  
+                              
+                            <li class="nav-item">
+                            	<a class="nav-item nav-link" id="nav-extremidad-tab" data-toggle="tab" href="#nav-extremidad" role="tab" aria-controls="nav-extremidad" aria-selected="false">Extremidades</a>
+                            </li>  
+                    	</ul>
+                  </nav>
+
+                  <div class="tab-content" >
+                        <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-paciente-tab"  id="nav-paciente" >
+                              <form method="post" id="formdata">
+                                  <div class="form-group mx-sm-3">
+                                    </br>
+                                      <h3>Paciente</h3>
+                                      <label for="patient_name" class="sr-only">Nombres: </label>
+                                      <input class="form-control" placeholder="* Nombres" type="text" name="patient_name" id="patient_name" class="form-control">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_last_name" class="sr-only">Apellidos: </label>
+                                      <input class="form-control" placeholder="* Apellidos" type="text" name="patient_last_name" id="patient_last_name">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3"> 
+                                      <label for="patient_email" class="sr-only">E-mail: </label>
+                                      <input class="form-control" placeholder="* E-mail:" type="email" name="patient_email" id="patient_email">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_address" class="sr-only">Dirección: </label>
+                                      <input class="form-control" placeholder="Dirección:" type="text" name="patient_address" id="patient_address">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_sex" class="sr-only">Sexo:</label>
+                                      <select class="form-control" name="patient_sex" id="patient_sex">
+                                          <option disabled selected value="None">Sexo:</option>
+                                          <option value="Male">Hombre</option>
+                                          <option value="Female">Mujer</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_instagram" class="sr-only">Instagram: </label>
+                                      <input class="form-control" placeholder="Instagram:" type="text" name="patient_instagram" id="patient_instagram">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_whatsapp" class="sr-only">WhatsApp: </label>
+                                      <input class="form-control" placeholder="* Whatsapp:" type="number" name="patient_whatsapp" id="patient_whatsapp">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_telegram" class="sr-only">Telegram: </label>
+                                      <input class="form-control" placeholder="Telegram:" type="text" name="patient_telegram" id="patient_telegram">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_phone" class="sr-only">Teléfono de casa: </label>
+                                      <input class="form-control" placeholder="* Tel. Casa" type="number" name="patient_phone" id="patient_phone">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label for="patient_verification_period" class="sr-only">Período de verificación presencial: </label>
+                                      <input class="form-control" placeholder="Periodo de verificación" type="date" name="patient_verification_period" id="patient_verification_period">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3"> 
+                                          <input type="button" class="btn btn-success" id="botonusuario" value="Registrar">
+                                      </br>
+                                    </div>
+                              </form>
+                        </div>
+
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-familiar-tab" id="nav-familiar" >
+                              <form method="post" id="formfamiliar">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Familiar Responsable</h3>
+                                      <label class="sr-only" for="family_name">Nombres: </label>
+                                      <input class="form-control" placeholder="* Nombres:" type="text" name="family_name" id="family_name">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="family_last_name">Apellidos: </label>
+                                      <input class="form-control" placeholder="* Apellidos:" type="text" name="family_last_name" id="family_last_name">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="family_email">E-mail: </label>
+                                      <input class="form-control" placeholder="* E-mail:" type="email" name="family_email" id="family_email">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="family_instagram">Instagram: </label>
+                                      <input class="form-control" placeholder="Instagram:" type="text" name="family_instagram" id="family_instagram">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="family_whatsapp">WhatsApp: </label>
+                                      <input class="form-control" placeholder="* Whatsapp:" type="number" name="family_whatsapp" id="family_whatsapp">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="family_telegram">Telegram: </label>
+                                      <input class="form-control" placeholder="Telegram:" type="text" name="family_telegram" id="family_telegram">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="family_phone">Teléfono de casa: </label>
+                                      <input class="form-control" placeholder="* Tel. Casa" type="number" name="family_phone" id="family_phone">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="family_address">Dirección: </label>
+                                      <input class="form-control" placeholder="Dirección:" type="text" name="family_address" id="family_address">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonfamiliar" value="Registrar">
+                                      </br>
+                                    </div>
+                              </form>
+                        </div>
+                              
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-medicamento-tab" id="nav-medicamento" >
+                              <form method="post" id="formmed">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Medicamentos</h3>
+                                      <label class="sr-only" for="medicine_name">Nombre: </label>
+                                      <input class="form-control" placeholder="* Nombre:" type="text" name="medicine_name[]" id="medicine_name">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="medicine_quantity"> Cantidad por toma o dósis: </label>
+                                      <input class="form-control" placeholder="* Cantidad por toma o dósis:" type="text" name="medicine_quantity" id="medicine_quantity">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="medicine_regularity">Regularidad entre tomas (tiempo): </label>
+                                      <input class="form-control" placeholder="* Regularidad entre tomas (tiempo):" type="text" name="medicine_regularity" id="medicine_regularity">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" type="reset" class="btn btn-success" id="botonmedicina" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                              
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-contacto-tab" id="nav-contacto" >
+                              <form method="post" id="formcontacts">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Contacto</h3>
+                                      <label class="sr-only" for="contact_type">Tipo de contacto: </label>
+                                      <select class="form-control" name="contact_type" id="contact_type">
+                                          <option disabled selected value="">* Tipo de Contacto</option>
+                                          <option value="family_contact">Contacto familiar</option>
+                                          <option value="social_contact">Contacto social</option>
+                                          <option value="doctor_contact">Contacto de doctor</option>
+                                          <option value="medical_services_contact">Contacto de servicios médicos</option>
+                                          <option value="emergency_contact">Contacto de emergencia</option>
+                                          <option value="ambulance_contact">Contacto de ambulancia</option>
+                                          <option value="icu_contact">Contacto de urgencias</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_name">Nombres: </label>
+                                      <input class="form-control" placeholder="* Nombres:" type="text" name="contact_name" id="contact_name">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_last_name">Apellidos: </label>
+                                      <input class="form-control" placeholder="* Apellidos" type="text" name="contact_last_name[]" id="contact_last_name">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_phone">Teléfono: </label>
+                                      <input class="form-control" placeholder="* Teléfono:" type="number" name="contact_phone" id="contact_phone">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_email">E-mail: </label>
+                                      <input class="form-control" placeholder="* E-mail:" type="email" name="contact_email" id="contact_email">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_instagram">Instagram: </label>
+                                      <input class="form-control" placeholder="Instagram:" type="text" name="contact_instagram[]" id="contact_instagram">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_whatsapp">WhatsApp: </label>
+                                      <input class="form-control" placeholder="* WhatsApp:" type="number" name="contact_whatsapp" id="contact_whatsapp">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_telegram">Telegram: </label>
+                                      <input class="form-control" placeholder="Telegram:" type="text" name="contact_telegram" id="contact_telegram">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="contact_address">Dirección: </label>
+                                      <input class="form-control" placeholder="Dirección:" type="text" name="contact_address" id="contact_address"></br>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botoncontacto" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                              
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-enfermedades-tab" id="nav-enfermedades" >
+                              <form method="post" id="formdiseases">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Enfermedades</h3>
+                                      <label class="sr-only" for="current_symptoms">Síntomas: </label>
+                                      <input class="form-control" placeholder="* Síntomas:" type="text" name="current_symptoms[]" id="current_symptoms">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="current_disease">Enfermedades actuales: </label>
+                                      <input class="form-control" placeholder="* Enfermedades Actuales:" type="text" name="current_disease[]" id="current_disease">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonenfermedades" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                            
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-evaluacion-tab" id="nav-evaluacion" >
+                              <form method="post" id="formhistoric">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h1>Evaluación Clínica</h1>
+                                      <h3>Historico</h3>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_cva" id="evaluation_cva">
+                                      <label class="form-check-label" for="evaluation_cva">CVA </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_cardiac" id="evaluation_cardiac">
+                                      <label class="form-check-label" for="evaluation_cardiac">Cardíaco </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_asthma" id="evaluation_asthma">
+                                      <label class="form-check-label" for="evaluation_asthma">Asma </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_smoker" id="evaluation_smoker">
+                                      <label class="form-check-label" for="evaluation_smoker">Fumador </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_elevated_cholesterol" id="evaluation_elevated_cholesterol">
+                                      <label class="form-check-label" for="evaluation_elevated_cholesterol">Colesterol Elevado </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_breast_feeding" id="evaluation_breast_feeding">
+                                      <label class="form-check-label" for="evaluation_breast_feeding">Amamantamiento </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_substance_abuse" id="evaluation_substance_abuse">
+                                      <label class="form-check-label" for="evaluation_substance_abuse">Abuso de Sustancias </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_hypertension" id="evaluation_hypertension">
+                                      <label class="form-check-label" for="evaluation_hypertension">Hipertensión </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_dialysis" id="evaluation_dialysis">
+                                      <label class="form-check-label" for="evaluation_dialysis">Diálisis </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_migraine" id="evaluation_migraine">
+                                      <label class="form-check-label" for="evaluation_migraine">Migraña </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_thyroid" id="evaluation_thyroid">
+                                      <label class="form-check-label" for="evaluation_thyroid">Tiroides </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_alcoholism" id="evaluation_alcoholism">
+                                      <label class="form-check-label" for="evaluation_alcoholism">Alcoholismo </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_cancer" id="evaluation_cancer">
+                                      <label class="form-check-label" for="evaluation_cancer">Cáncer </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_seizures" id="evaluation_seizures">
+                                      <label class="form-check-label" for="evaluation_seizures">Convulsiones </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_copd" id="evaluation_copd">
+                                      <label class="form-check-label" for="evaluation_copd">Enfermedad Pulmonar Obstructiva Crónica (EPOC) </label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_psych">Psicoanálisis:</label>
+                                      <textarea rows="3" type="text" name="evaluation_psych" id="evaluation_psych" class="form-control" placeholder="* Psicoanálisis:"></textarea>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_genitourinary">Genitourinario:</label>
+                                      <textarea rows="3" type="text" name="evaluation_genitourinary" id="evaluation_genitourinary" class="form-control" placeholder="* Genitourinario:"></textarea>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_geriatric">Geriátrico:</label>
+                                      <input class="form-control" type="text" name="evaluation_geriatric" id="evaluation_geriatric" placeholder="* Geriátrico:">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_gestational_age">Edad de gestación:</label>
+                                      <input class="form-control" type="number" min="1" name="evaluation_gestational_age" id="evaluation_gestational_age" placeholder="* Edad de Gestación:">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonhistorico" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-orientacion-tab" id="nav-orientacion" >
+                              <form method="post" id="formOrientation">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                          <h3>Orientación</h3>
+                                      <label class="sr-only" for="evaluation_loc">Nivel de conciencia:</label>
+                                      <select class="form-control" name="evaluation_loc" id="evaluation_loc">
+                                          <option disabled selected value="">Nivel de Conciencia:</option>
+                                          <option value="alert">Alerta</option>
+                                          <option value="drowsy">Soñoliento</option>
+                                          <option value="lethargic">Aletargado</option>
+                                          <option value="stuporous">Estuporoso</option>
+                                          <option value="coma">Coma</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_person">Persona:</label>
+                                      <input class="form-control" placeholder="Persona:" type="text" name="evaluation_person" id="evaluation_person">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_place">Lugar:</label>
+                                      <input class="form-control" placeholder="Lugar:" type="text" name="evaluation_place" id="evaluation_place">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_time">Tiempo:</label>
+                                      <input class="form-control" placeholder="Tiempo:" type="text" name="evaluation_time" id="evaluation_time">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_situation">Situación:</label>
+                                      <input class="form-control" placeholder="Situación:" type="text" name="evaluation_situation" id="evaluation_situation">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonOrientacion" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-cuerpo-tab" id="nav-cuerpo" >
+                              <form method="post" id="formCuerpo">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Cuerpo</h3>
+                                      <label class="sr-only" for="evaluation_hair">Cabello:</label>
+                                      <input class="form-control" placeholder="Cabello:" type="text" name="evaluation_hair" id="evaluation_hair">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">  
+                                      <label class="sr-only" for="evaluation_perla">Pupilas Iguales Redondas Reactivas a la Luz y Acomodación (PIRRLA): </label>
+                                      <input class="form-control" placeholder="Pupilas Iguales Redondas Reactivas a la Luz y Acomodación (PIRRLA):" type="text" name="evaluation_perla" id="evaluation_perla">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_nose">Naríz:</label>
+                                      <input class="form-control" placeholder="Naríz:" type="text" name="evaluation_nose" id="evaluation_nose">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_ears">Oídos:</label>
+                                      <input class="form-control" placeholder="Oídos:" type="text" name="evaluation_ears" id="evaluation_ears">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_mouth">Boca:</label>
+                                      <input class="form-control" placeholder="Boca:" type="text" name="evaluation_mouth" id="evaluation_mouth">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <h4>Boca</h4>
+                                      <label class="sr-only" for="evaluation_midline_tongue">Lengua de la línea media:</label>
+                                      <input class="form-control" placeholder="Linea media de la lengua:" type="text" name="evaluation_midline_tongue" id="evaluation_midline_tongue">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_moist">Humedad de la lengua: </label>
+                                      <input class="form-control" placeholder="Humedad de la Lengua:" type="text" name="evaluation_moist" id="evaluation_moist">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_lesions">Lesiones en la boca:</label>
+                                      <input class="form-control" placeholder="Lesiones en la Boca:" type="text" name="evaluation_lesions" id="evaluation_lesions">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_dentitions">Denticiones:</label>
+                                      <input class="form-control" placeholder="Denticiones:" type="text" name="evaluation_dentitions" id="evaluation_dentitions">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <h4>Pecho</h4>
+                                      <label class="sr-only" for="evaluation_chest_symmetry">Simetría de pecho:</label>
+                                      <input class="form-control" placeholder="Simetría de Pecho:" type="text" name="evaluation_chest_symmetry" id="evaluation_chest_symmetry">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_skin_turgor">Turgencia de la piel (clavícula):</label>
+                                      <input class="form-control" placeholder="Turgencia de la Piel (Clavícula):" type="text" name="evaluation_skin_turgor" id="evaluation_skin_turgor">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <h4>Sonidos de respiración</h4>
+                                      <label class="sr-only" for="evaluation_anterior">Anterior:</label>
+                                      <input class="form-control" placeholder="Sonidos de Respiración:" type="text" name="evaluation_anterior" id="evaluation_anterior">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_posterior">Posterior:</label>
+                                      <input class="form-control" placeholder="Posterios:" type="text" name="evaluation_posterior" id="evaluation_posterior">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_lateral">Lateral:</label>
+                                      <input class="form-control" placeholder="Lateral:" type="text" name="evaluation_lateral" id="evaluation_lateral">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <h4>Abdómen</h4>
+                                      <label class="sr-only" for="evaluation_inspection">Inspección:</label>
+                                      <input class="form-control" placeholder="Inspección" type="text" name="evaluation_inspection" id="evaluation_inspection">
+                                     </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_palpation">Palpamiento:</label>
+                                      <textarea class="form-control" placeholder="Palpamiento:" rows="2" type="text" name="evaluation_palpation" id="evaluation_palpation"></textarea>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <h4>Auscultación</h4>
+                                      <label class="sr-only" for="evaluation_ruq">RUQ:</label>
+                                      <select class="form-control" name="evaluation_ruq" id="evaluation_ruq">
+                                          <option disabled selected value="">RUQ:</option>
+                                          <option value="active">Activa</option>
+                                          <option value="hyper">Hiper</option>
+                                          <option value="absent">Ausente</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_rlq">RLQ:</label>
+                                      <select class="form-control" name="evaluation_rlq" id="evaluation_rlq">
+                                          <option disabled selected value="">RLQ:</option>
+                                          <option value="active">Activa</option>
+                                          <option value="hyper">Hiper</option>
+                                          <option value="absent">Ausente</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">  
+                                      <label class="sr-only" for="evaluation_luq">LUQ:</label>
+                                      <select class="form-control" name="evaluation_luq" id="evaluation_luq">
+                                          <option disabled selected value="">LUQ:</option>
+                                          <option value="active">Activa</option>
+                                          <option value="hyper">Hiper</option>
+                                          <option value="absent">Ausente</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_llq">LLQ:</label>
+                                      <select class="form-control" name="evaluation_llq" id="evaluation_llq">
+                                          <option disabled selected value="">LLQ:</option>
+                                          <option value="active">Activa</option>
+                                          <option value="hyper">Hiper</option>
+                                          <option value="absent">Ausente</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <h4>Valoración de piel</h4>
+                                      <label class="sr-only" for="evaluation_skin">Característica:</label>
+                                      <select class="form-control" name="evaluation_skin" id="evaluation_skin">
+                                          <option disabled selected value="">Valoración de Piel:</option>
+                                          <option value="normal">Normal</option>
+                                          <option value="jaundice">Ictericia</option>
+                                          <option value="flushed">Sonrojada</option>
+                                          <option value="hot">Caliente</option>
+                                          <option value="cool">Fría</option>
+                                          <option value="sweaty">Sudoroza</option>
+                                          <option value="bluish">Azulada</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_skin_description">Descripción:</label>
+                                      <input class="form-control" placeholder="Descripción:" type="text" name="evaluation_skin_description" id="evaluation_skin_description">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonCuerpo" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                              
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-general-tab" id="nav-general" >
+                              <form method="post" id="formGeneral">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Vitales</h3>
+                                      <label class="sr-only" for="evaluation_temp">Temperatura:</label>
+                                      <input class="form-control" placeholder="Temperatura:" type="number" name="evaluation_temp" id="evaluation_temp">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_bp">Presión en sangre:</label>
+                                      <input class="form-control" placeholder="Presión en Sangre:" type="number" name="evaluation_bp" id="evaluation_bp">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pulseOx">Pulso Ox (oxímetro de pulso):</label>
+                                      <input class="form-control" placeholder="Pulso Ox (Oxímetro de Pulso):" type="number" name="evaluation_pulseOx" id="evaluation_pulseOx">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_r">R (pulso rectal):</label>
+                                      <input class="form-control" placeholder="R (Pulso Rectal):" type="number" name="evaluation_r" id="evaluation_r">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_carotid_pulse">Pulso carotídeo:</label>
+                                      <input class="form-control" placeholder="Pulso Carotídeo:" type="number" name="evaluation_carotid_pulse" id="evaluation_carotid_pulse">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_carotid_pulse_type">Tipo:</label>
+                                      <select class="form-control" name="evaluation_carotid_pulse_type" id="evaluation_carotid_pulse_type">
+                                          <option disabled selected value="">Tipo:</option>
+                                          <option value="jvd">Distensión de la vena yugular</option>
+                                          <option value="trachea midline">Línea media de la tráquea</option>
+                                      </select>
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_apical_pulse">Pulso apical:</label>
+                                      <input class="form-control" placeholder="Pulso Apical:" type="number" name="evaluation_apical_pulse" id="evaluation_apical_pulse">
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_apical_pulse_type">Tipo:</label>
+                                      <select class="form-control" name="evaluation_apical_pulse_type" id="evaluation_apical_pulse_type">
+                                          <option disabled selected value="" >Tipo:</option>
+                                          <option value="muffled">Sorda/Apagada</option>
+                                          <option value="arrhythmia">Arritmia</option>
+                                      </select>
+                                    </div>
+                                    
+                                    <div class="form-group mx-sm-3">
+                                      <h3>Evaluación General</h3>
+                                      <label class="sr-only" for="evaluation_weight">Peso:</label>
+                                      <input class="form-control" placeholder="Peso:" type="text" name="evaluation_weight" id="evaluation_weight">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_height">Altura:</label>
+                                      <input class="form-control" placeholder="Altura:" type="text" name="evaluation_height" id="evaluation_height">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_bm">Balance muscular:</label>
+                                      <input class="form-control" placeholder="Balance Muscular:" type="text" name="evaluation_bm" id="evaluation_bm">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_radial_pulseS">Pulso radial Superior, +2:</label>
+                                      <input class="form-control" placeholder="Pulso Radial Superior:" type="number" name="evaluation_radial_pulseS" id="evaluation_radial_pulseS">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_radial_pulseI">Pulso radial Inferior, +2:</label>
+                                      <input class="form-control" placeholder="Pulso Radial Inferior:" type="number" name="evaluation_radial_pulseI" id="evaluation_radial_pulseI">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_fr_pulse">Pulso en pie derecho:</label>
+                                      <input class="form-control" placeholder="Pulso en Pie Derecho:" type="number" name="evaluation_fr_pulse" id="evaluation_fr_pulse">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_fl_pulse">Pulso en pie izquierdo:</label>
+                                      <input class="form-control" placeholder="Pulso en Pie Izquierdo:" type="number" name="evaluation_fl_pulse" id="evaluation_fl_pulse">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonGeneral" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                              
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-dolor-tab" id="nav-dolor" >
+                              <form method="post" id="formDolor">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Evaluación de dolor</h3>
+                                      <label class="sr-only" for="evaluation_pain">Dolor:</label>
+                                      <select class="form-control" name="evaluation_pain" id="evaluation_pain">
+                                          <option disabled selected value="">Dolor:</option>
+                                          <option value="Acute">Agudo</option>
+                                          <option value="Chronic">Crónico</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_escale">Escala (0-10):</label>
+                                      <input class="form-control" placeholder="Escala (0-10):" type="number" min="0" max="10" name="evaluation_pain_escale" id="evaluation_pain_escale">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_location">Ubicación:</label>
+                                      <input class="form-control" placeholder="Ubicación:" type="text" name="evaluation_pain_location" id="evaluation_pain_location">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_duration">Duración:</label>
+                                      <input class="form-control" placeholder="Duración:" type="text" name="evaluation_pain_duration" id="evaluation_pain_duration">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_characteristics">Características:</label>
+                                      <input class="form-control" placeholder="Características:" type="text" name="evaluation_pain_characteristics" id="evaluation_pain_characteristics">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_precipitation">Precipitación:</label>
+                                      <input class="form-control" placeholder="Precipitación:" type="text" name="evaluation_pain_precipitation" id="evaluation_pain_precipitation">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_frecuency">Frecuencia:</label>
+                                      <input class="form-control" placeholder="Frecuencia:" type="text" name="evaluation_pain_frecuency" id="evaluation_pain_frecuency">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_non_verbals">No verbales:</label>
+                                      <input class="form-control" placeholder="No verbales:" type="text" name="evaluation_pain_non_verbals" id="evaluation_pain_non_verbals">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_relief_factors">Factores de alivio:</label>
+                                      <input class="form-control" placeholder="Factores de Alivio:" type="text" name="evaluation_pain_relief_factors" id="evaluation_pain_relief_factors">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_pain_sleep">Dolor al dormir:</label>
+                                      <input class="form-control" placeholder="Dolor al dormir:" type="text" name="evaluation_pain_sleep" id="evaluation_pain_sleep">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonDolor" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                            
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-fuerza-tab" id="nav-fuerza" >
+                              <form method="post" id="formFuerza">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Fuerza en extremidades</h3>
+                                      <label class="sr-only" for="evaluation_sur">Superior derecho</label>
+                                      <input class="form-control" placeholder="Superior Derecho:" type="text" name="evaluation_sur" id="evaluation_sur">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_sul">Superior izquierdo</label>
+                                      <input class="form-control" placeholder="Superior Izquierdo:" type="text" name="evaluation_sul" id="evaluation_sul">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_slr">Inferior derecho</label>
+                                      <input class="form-control" placeholder="Inferior Derecho:" type="text" name="evaluation_slr" id="evaluation_slr">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_sll">Inferior izquierdo</label>
+                                      <input class="form-control" placeholder="Inferior Izquierdo:" type="text" name="evaluation_sll" id="evaluation_sll">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_sensations">Sensaciones:</label>
+                                      <input class="form-control" placeholder="Sensaciones:" type="text" name="evaluation_sensations" id="evaluation_sensations">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonFuerza" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                              
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-rom-tab" id="nav-rom" >
+                              <form method="post" id="formROM">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                      <h3>Amplitud de Movimiento (ROM)</h3>
+                                      <label class="sr-only" for="evaluation_rom_ur">Superior derecho</label>
+                                      <input class="form-control" placeholder="Amplitud de Movimiento (ROM):" type="text" name="evaluation_rom_ur" id="evaluation_rom_ur">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_rom_ul">Superior izquierdo</label>
+                                      <input class="form-control" placeholder="Superior Izquierdo:" type="text" name="evaluation_rom_ul" id="evaluation_rom_ul">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_rom_lr">Inferior derecho</label>
+                                      <input class="form-control" placeholder="Inferior Izquierdo:" type="text" name="evaluation_rom_lr" id="evaluation_rom_lr">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_rom_ll">Inferior izquierdo</label>
+                                      <input class="form-control" placeholder="Inferior Izquierdo:" type="text" name="evaluation_rom_ll" id="evaluation_rom_ll">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonROM" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                              
+                        <div class="tab-pane fade" role="tabpanel" aria-labelledby="nav-extremidad-tab" id="nav-extremidad" >
+                              <form method="post" id="formExtremidad">
+                                    <div class="form-group mx-sm-3">
+                                          </br>
+                                          <h3>Extremidades</h3>
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_capillary_refill" id="evaluation_capillary_refill">
+                                      <label class="form-check-label" for="evaluation_capillary_refill">Recarga capilar < 3 seg</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_hair_present" id="evaluation_hair_present">
+                                      <label class="form-check-label" for="evaluation_hair_present">Cabello presente</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_foot_strength" id="evaluation_foot_strength" >
+                                      <label for="evaluation_foot_strength">Fuerza en pies</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_nails" id="evaluation_nails">
+                                      <label class="form-check-label" for="evaluation_nails">Uñas presentes</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_nails_yellowed" id="evaluation_nails_yellowed">
+                                      <label class="form-check-label" for="evaluation_nails_yellowed">Uñas amarillentas</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_nails_thickened" id="evaluation_nails_thickened">
+                                      <label class="form-check-label" for="evaluation_nails_thickened">Uñas engrosadas</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="checkbox" value="1" class="form-check-input" name="evaluation_nails_ingrown" id="evaluation_nails_ingrown">
+                                      <label class="form-check-label" for="evaluation_nails_ingrown">Uñas encarnadas</label>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_edema">Edema:</label>
+                                      <input class="form-control" placeholder="Edema:" type="text" name="evaluation_edema" id="evaluation_edema">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_homains">Dominios</label>
+                                      <select class="form-control" name="evaluation_homains" id="evaluation_homains">
+                                          <option disabled selected value="">Dominios</option>
+                                          <option value="positive">+</option>
+                                          <option value="negative">-</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_claudations">Claudaciones</label>
+                                      <select class="form-control" name="evaluation_claudations" id="evaluation_claudations">
+                                          <option disabled selected value="">Claudaciones</option>
+                                          <option value="positive">+</option>
+                                          <option value="negative">-</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_grip_sup">Agarre superior:</label>
+                                      <input class="form-control" placeholder="Agarre Superior:" type="text" name="evaluation_grip_sup" id="evaluation_grip_sup">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_grip_low">Agarre inferior:</label>
+                                      <input class="form-control" placeholder="Agarre inferior:" type="text" name="evaluation_grip_low" id="evaluation_grip_low">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_veins_sup">Relleno de venas superior:</label>
+                                      <input class="form-control" placeholder="Relleno de Venas Superior:" type="text" name="evaluation_veins_sup" id="evaluation_veins_sup">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_veins_low">Relleno de venas infeior:</label>
+                                      <input class="form-control" placeholder="Relleno de Venas Inferior:" type="text" name="evaluation_veins_low" id="evaluation_veins_low">
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_temp_vs_trunk_sup">Temperatura vs tronco superior:</label>
+                                      <select class="form-control" name="evaluation_temp_vs_trunk_sup" id="evaluation_temp_vs_trunk_sup">
+                                          <option disabled selected value="">Temperatura vs Tronco Superior</option>
+                                          <option value="warm">Cálida</option>
+                                          <option value="cool">Fría</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <label class="sr-only" for="evaluation_temp_vs_trunk_low">Temperatura vs tronco inferior:</label>
+                                      <select class="form-control" name="evaluation_temp_vs_trunk_low" id="evaluation_temp_vs_trunk_low">
+                                          <option disabled selected value="">Temperatura vs Tronco Inferior</option>
+                                          <option value="warm">Cálida</option>
+                                          <option value="cool">Fría</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group mx-sm-3">
+                                      <input type="button" class="btn btn-success" id="botonExtremidad" value="Registrar">
+                                    </div>
+                              </form>
+                        </div>
+                  </div>
+            </div>            
+        </div>
+        <div id="exito" style="display:none">
+            Sus datos han sido recibidos con éxito.
+        </div>
+        <div id="fracaso" style="display:none">
+            Se ha producido un error durante el envío de datos.
+        </div>
+    </div>
+    </div>
+        
+{% endblock content %}
