@@ -12,6 +12,6 @@ independence, reducing the need for admission to care services for the elderly.
 ---
 
 ## Developed By:
- - Rafael de Jesús Anguiano Suárez del Real (Agosto - Diciembre 2018)
+ - Rafael de Jesús Anguiano Suárez del Real (Agosto - Diciembre 2020)
  - Cecilia Alexia Torres Guzmán.
  - Jose Adrián Ochoa Sánchez.
